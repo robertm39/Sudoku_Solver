@@ -20,20 +20,17 @@ def adjacent(cell_coords):
     """
     x, y = cell_coords
     prev = set([cell_coords])
-    
     #Yield cells in the same row or column
     for v in VALS:
         coords = (v, y)
-        if coords in prev:
-            continue
-        prev.add(coords)
-        yield coords
+        if not coords in prev:
+            prev.add(coords)
+            yield coords
         
         coords = (x, v)
-        if coords in prev:
-            continue
-        prev.add(coords)
-        yield coords
+        if not coords in prev:
+            prev.add(coords)
+            yield coords
     
     #Yield cells in same square
     ulx = ((x-1)//3) * 3 + 1
@@ -46,7 +43,7 @@ def adjacent(cell_coords):
             coords = (cx, cy)
             if coords in prev:
                 continue
-            coords.add(prev)
+            prev.add(coords)
             yield coords
 
 class Cell:
@@ -61,6 +58,9 @@ class Cell:
             self.possible = set([self.num])
     
     def remove_possibility(self, num):
+        if not num in self.possible:
+            return
+        
         self.possible.remove(num)
         if len(self.possible) == 1:
             self.num = list(self.possible)[0]
@@ -86,7 +86,10 @@ class SudokuSolver:
                     self.known_value_cells.put(cell)
     
     def print_state(self):
+        # print("⌜-----------⌝")
+        print("+-----------+")
         for y in VALS:
+            print('|', end='')
             for x in VALS:
                 num = self.board[x, y].num
                 if num is None:
@@ -95,9 +98,11 @@ class SudokuSolver:
                     print(num, end='')
                 if x in (3, 6):
                     print('|', end='')
-            print('')
+            print('|')
             if y in(3, 6):
-                print('---+---+---')
+                print('|---+---+---|')
+        # print("⌞-----------⌟")
+        print("+-----------+")
     
     def alert_value(self, cell):
         self.known_value_cells.put(cell)
@@ -115,4 +120,13 @@ class SudokuSolver:
                 continue
             num = cell.num
             for coords in adjacent(cell.coords):
-                self.board[coords].possible.remove(num)
+                self.board[coords].remove_possibility(num)
+    
+    def solve(self):
+        """
+        Solve the sudoku.
+        """
+        self.print_state()
+        print('')
+        self.basic_elimination()
+        self.print_state()
