@@ -138,7 +138,7 @@ class InTwins:
                     #If there are fewer cells than numbers,
                     #this is a contradiction
                     if num_of_cells < order:
-                        self.parent.alert_contradiction()
+                        self.parent.set_contradiction()
                         return
                     
                     #If the number of cells equals the order,
@@ -149,5 +149,6 @@ class InTwins:
                         if num in comb:
                             continue
                         for coords in coords_with_nums:
-                            cell = self.parent.board[coords]
-                            cell.remove_possibility(num)
+                            self.parent.remove_possibility(coords, num)
+                            # cell = self.parent.board[coords]
+                            # cell.remove_possibility(num)
