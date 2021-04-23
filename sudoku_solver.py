@@ -45,15 +45,17 @@ class SudokuSolver:
     def initialize(self, start):
         if start is None:
             return
-        
+        print('initializing')
         for coords, val in start.items():
+            print(coords, val)
             other_vals = set(self.puzzle.cell_values)
             other_vals.discard(val)
             for o_val in other_vals:
                 self.remove_possibility(coords, o_val)
     
     def print_state(self):
-        puzzle_utils.print_board(self.board)
+        # puzzle_utils.print_board(self.board)
+        self.puzzle.print_board(self.board)
     
     def remove_possibility(self, coords, num):
         cell = self.board[coords]

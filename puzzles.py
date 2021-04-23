@@ -53,16 +53,38 @@ for uly in range(1, NORMAL_SUDOKU_SIZE+1, NORMAL_SUDOKU_SQUARE_SIZE):
         square_group = puzzle_utils.Group(square)
         NORMAL_SUDOKU_GROUPS.add(square_group)
 
-NORMAL_SUDOKU = puzzle_utils.Puzzle(NORMAL_SUDOKU_LAYOUT,
-                                    NORMAL_SUDOKU_VALUES,
-                                    NORMAL_SUDOKU_GROUPS)
-
 def get_normal_sudoku_start(start_list):
+    # print('Getting start')
     start = dict()
     for y, row in enumerate(start_list, 1):
-        for x, val in enumerate(start_list, 1):
+        for x, val in enumerate(row, 1):
             if not val in range(1, NORMAL_SUDOKU_SIZE+1):
                 continue
+            # print('{}: {}'.format(coords, val))
             coords = puzzle_utils.Coords(x, y)
             start[coords] = str(val)
     return start
+
+def print_normal_sudoku_board(board):
+    print('+-----------+')
+    for y in range(1, NORMAL_SUDOKU_SIZE+1):
+        print('|', end='')
+        for x in range(1, NORMAL_SUDOKU_SIZE+1):
+            cell = board[puzzle_utils.Coords(x, y)]
+            value = cell.value
+            if value is None:
+                print(' ', end='')
+            else:
+                print(value, end='')
+            if x in (3, 6):
+                print('|', end='')
+        print('|')
+        if y in(3, 6):
+            print('|---+---+---|')
+    print('+-----------+')
+
+NORMAL_SUDOKU = puzzle_utils.Puzzle(NORMAL_SUDOKU_LAYOUT,
+                                    NORMAL_SUDOKU_VALUES,
+                                    NORMAL_SUDOKU_GROUPS,
+                                    get_normal_sudoku_start,
+                                    print_normal_sudoku_board)

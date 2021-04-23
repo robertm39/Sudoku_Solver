@@ -160,7 +160,7 @@ puzzle_11 = [[x, x, 1, x, x, x, 2, 7, x],
 
 def solver_test():
     puzzle = puzzles.NORMAL_SUDOKU
-    start = puzzles.get_normal_sudoku_start(puzzle_1)
+    start = puzzle.get_start(puzzle_1)
     solver = sudoku_solver.SudokuSolver(puzzle, start)
     solver.solve()
 

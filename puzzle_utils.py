@@ -17,6 +17,15 @@ class Coords:
     def __str__(self):
         return '({}, {})'.format(self.x, self.y)
     
+    def __eq__(self, other):
+        if not type(other) is Coords:
+            return False
+        
+        return self.x == other.x and self.y == other.y
+    
+    def __neq__(self, other):
+        return not (self == other)
+    
     def __hash__(self):
         if self._hash is not None:
             return self._hash
@@ -41,6 +50,12 @@ class Group:
     def __iter__(self):
         return iter(self._coords)
     
+    def __eq__(self, other):
+        return self._coords == other._coords
+    
+    def __neq__(self, other):
+        return not(self == other)
+    
     def __hash__(self):
         if self._hash is not None:
             return self._hash
@@ -58,10 +73,12 @@ class Puzzle:
     """
     A definition of a generalized sudoku puzzle.
     """
-    def __init__(self, layout, cell_values, groups):
+    def __init__(self, layout, cell_values, groups, get_start, print_board):
         self.layout = set(layout)
         self.cell_values = set(cell_values)
         self.groups = set(groups)
+        self.get_start = get_start
+        self.print_board = print_board
         
         self.groups_from_coord = dict()
         
@@ -128,7 +145,6 @@ class Board:
         for coords in self.puzzle.layout:
             cell = Cell(coords, self.puzzle)
             self.board[coords] = cell
-
-#TODO smart printing
-def print_board(board):
-    print(board)
+    
+    def __getitem__(self, coords):
+        return self.board[coords]
