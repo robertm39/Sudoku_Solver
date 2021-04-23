@@ -54,6 +54,38 @@ puzzle_4 = [[x, x, x, x, x, x, x, x, x],
             [x, x, 2, x, x, x, x, x, x],
             [x, x, 1, x, x, x, x, x, x]]
 
+#Evil level
+puzzle_5 = [[x, x, 6, x, x, x, x, x, x],
+            [8, x, 9, x, x, 2, x, x, 5],
+            [2, x, x, 6, x, 9, 1, x, x],
+            [x, x, 5, x, 1, 7, x, x, x],
+            [x, 7, x, x, x, x, x, 4, x],
+            [x, x, x, 9, 2, x, 3, x, x],
+            [x, x, 4, 1, x, 3, x, x, 6],
+            [7, x, x, 5, x, x, 9, x, 3],
+            [x, x, x, x, x, x, 8, x, x]]
+
+#Puzzle 5, with a number taken out
+puzzle_6 = [[x, x, 6, x, x, x, x, x, x],
+            [8, x, 9, x, x, 2, x, x, x],
+            [2, x, x, 6, x, 9, 1, x, x],
+            [x, x, 5, x, 1, 7, x, x, x],
+            [x, 7, x, x, x, x, x, 4, x],
+            [x, x, x, 9, 2, x, 3, x, x],
+            [x, x, 4, 1, x, 3, x, x, 6],
+            [7, x, x, 5, x, x, 9, x, 3],
+            [x, x, x, x, x, x, 8, x, x]]
+
+puzzle_7 = [[x, x, x, x, 5, 4, x, 1, x],
+            [x, 9, 1, x, x, 7, x, x, 3],
+            [x, x, x, 8, x, x, x, 6, x],
+            [x, x, 7, x, x, 8, x, x, x],
+            [4, x, x, x, 7, x, x, x, 5],
+            [x, x, x, 6, x, x, 1, x, x],
+            [x, 4, x, x, x, 6, x, x, x],
+            [7, x, x, 3, x, x, 2, 5, x],
+            [x, 6, x, 7, 8, x, x, x, x]]
+
 # puzzle_x = [[],
 #             [],
 #             [],
@@ -75,7 +107,7 @@ puzzle_4 = [[x, x, x, x, x, x, x, x, x],
 #             [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzle_2
+    puzzle = puzzle_7
     solver = sudoku_solver.SudokuSolver(puzzle)
     solver.solve()
 
