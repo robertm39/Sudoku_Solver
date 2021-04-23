@@ -99,18 +99,28 @@ class Cell:
         else:
             self.possible = set([self.num])
     
+    def set_value(self, num):
+        if not num in self.possible:
+            raise ValueError('Cannot be set to {}'.format(num))
+        
+        to_remove = [n for n in self.possible if n != num]
+        for n in to_remove:
+            self.remove_possibility(n)
+    
     def remove_possibility(self, num):
         if not num in self.possible:
             return
         
         self.possible.remove(num)
         self.parent.alert_removal(self, num)
+        
         if len(self.possible) == 1:
             self.num = list(self.possible)[0]
             self.parent.alert_value(self)
+        
         elif len(self.possible) == 0:
             self.num = None
-            self.parent.alert_contradiction(self)
+            self.parent.alert_contradiction()
     
     def __str__(self):
         return '<{}: {}>'.format(self.coords, self.num)

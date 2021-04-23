@@ -78,7 +78,8 @@ class InTwins:
                 raise AssertionError
                 continue
             data = self.data_from_groups[group]
-            data.unsolved_numbers.remove(cell.num)
+            # data.unsolved_numbers.remove(cell.num)
+            data.unsolved_numbers.discard(cell.num)
             # del data.coords_from_number[cell.num]
     
     def alert_removal(self, cell, num):
@@ -89,38 +90,22 @@ class InTwins:
             cell: The cell that had a possibility eliminated.
             num: The possibility that was eliminated.
         """
-        # print("Alerting removal")
-        # print("Removing {} in cell {}".format(num, cell))
         for group in utils.GROUPS_FROM_COORDS[cell.coords]:
             if not group in self.data_from_groups:
                 print('FAILED TO FIND GROUP')
                 raise AssertionError
                 continue
-            # utils.print_group(group)
             
             data = self.data_from_groups[group]
-            
-            # if 5 in data.coords_from_number:
-                # print('Num of fives: {}'.format(len(data.coords_from_number[5])))
             
             if not num in data.coords_from_number:
                 continue
             
             coords_from_number = data.coords_from_number[num]
-            # print(coords_from_number)
             coords_from_number.discard(cell.coords)
-            
-            # if 5 in data.coords_from_number:
-                # print('Num of fives: {}'.format(len(data.coords_from_number[5])))
-            # print(coords_from_number)
-        
-        # print("Done alerting removal")
     
-    def do_eliminations(self):
-        # print('*******************************************')
-        # print('Doing eliminations')
+    def do_removals(self):
         for group, data in self.data_from_groups.items():
-            # utils.print_group(group)
             for order in self.orders:
                 nums_to_consider = set()
                 #Only consider numbers with at most order cells
@@ -128,22 +113,16 @@ class InTwins:
                 #have too many cells
                 for num in data.unsolved_numbers:
                     num_cells = len(data.coords_from_number[num])
-                    # print('Number {}: {} cells'.format(num, num_cells))
                     if num_cells <= order:
                         nums_to_consider.add(num)
                 
-                # print('Unsolved: {}'.format(data.unsolved_numbers))
-                # print('Nums to consider: {}'.format(nums_to_consider))
                 for comb in itertools.combinations(nums_to_consider, order):
-                    # print('Testing {}'.format(comb))
                     comb = set(comb)
                     coords_with_nums = set()
                     for num in comb:
                         c_for_num = data.coords_from_number.get(num, set())
-                        # print('Num {} has {}'.format(num, len(c_for_num)))
                         coords_with_nums.update(c_for_num)
                     num_of_cells = len(coords_with_nums)
-                    # print('num_of_cells: {}'.format(num_of_cells))
                     
                     #If there are more cells than numbers,
                     #then we can't conclude anything
@@ -156,17 +135,12 @@ class InTwins:
                         self.parent.alert_contradiction()
                         return
                     
-                    # print('Eliminating')
                     #If the number of cells equals the order,
                     #then we can get rid of all other possibilities
                     #from these cells
                     for num in utils.VALS:
                         if num in comb:
                             continue
-                        # print('Removing {}'.format(num))
                         for coords in coords_with_nums:
                             cell = self.parent.board[coords]
                             cell.remove_possibility(num)
-            # print('\n')
-        # print('*******************************************')
-            

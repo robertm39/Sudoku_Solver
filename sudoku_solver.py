@@ -10,11 +10,17 @@ from queue import SimpleQueue
 import utils
 
 import twins_strategy
+import hypothetical_strategy
 
 class SudokuSolver:
-    def __init__(self, data=None):
+    def __init__(self, data=None, max_depth=1, quiet=False):
         self.board = dict()
         self.known_value_cells = SimpleQueue()
+        
+        if data is None:
+            data = [[None for _ in range(utils.SUDOKU_SIZE)]\
+                    for _ in range(utils.SUDOKU_SIZE)]
+        
         for y, row in enumerate(data, start=1):
             for x, num in enumerate(row, start=1):
                 if not num in utils.VALS:
@@ -25,10 +31,16 @@ class SudokuSolver:
                 if num in utils.VALS:
                     self.known_value_cells.put(cell)
         
+        self.max_depth = max_depth
+        self.quiet = quiet
+        
         self.contradiction = False
         
         self.strategies = list()
-        self.strategies.append(twins_strategy.InTwins(self, [1, 2, 3]))
+        self.strategies.append(twins_strategy.InTwins(self, [1, 2, 3, 4, 5, 6, 7, 8]))
+        if self.max_depth:
+            strategy = hypothetical_strategy.HypoNumber(self, self.max_depth)
+            self.strategies.append(strategy)
         
         self.changed = False
     
@@ -48,9 +60,8 @@ class SudokuSolver:
         for strat in self.strategies:
             strat.alert_removal(cell, num)
     
-    def alert_contradiction(self, cell):
+    def alert_contradiction(self):
         self.contradiction = True
-        print('Contradiction')
     
     def basic_elimination(self):
         """
@@ -68,12 +79,13 @@ class SudokuSolver:
         """
         Solve the sudoku.
         """
-        self.print_state()
-        print('')
+        if not self.quiet:
+            self.print_state()
+            print('')
         
         self.changed = True
         
-        while self.changed:
+        while self.changed and not self.contradiction:
             
             self.basic_elimination()
             
@@ -81,11 +93,13 @@ class SudokuSolver:
             #If we can't do anything else, we're done
             self.changed = False
             for strat in self.strategies:
-                strat.do_eliminations()
+                strat.do_removals()
                 
                 #If something changed, go back to basic elimination
                 if self.changed:
                     continue
-                
-            
-        self.print_state()
+        
+        if not self.quiet:
+            if self.contradiction:
+                print("Contradiction found")
+            self.print_state()

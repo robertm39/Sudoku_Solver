@@ -127,7 +127,7 @@ puzzle_9 = [[x, x, x, x, x, x, 3, 1, x],
 #             [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzle_9
+    puzzle = puzzle_6
     solver = sudoku_solver.SudokuSolver(puzzle)
     solver.solve()
 
