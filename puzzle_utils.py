@@ -148,3 +148,6 @@ class Board:
     
     def __getitem__(self, coords):
         return self.board[coords]
+    
+    def items(self):
+        return self.board.items()
