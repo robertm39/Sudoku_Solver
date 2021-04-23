@@ -106,6 +106,28 @@ puzzle_9 = [[x, x, x, x, x, x, 3, 1, x],
             [9, x, x, x, 1, 7, x, x, x],
             [x, 8, 6, x, x, x, x, x, x]]
 
+#"Extremely Difficult" puzzle from http://www.sudoku9x9.com/expert.php
+puzzle_10 = [[1, x, x, x, x, x, 2, 7, x],
+             [x, 3, x, x, 2, x, x, 1, x],
+             [7, x, 9, 6, x, x, x, x, x],
+             [x, 4, 8, x, x, x, 6, x, x],
+             [6, x, x, 8, x, x, 9, x, x],
+             [x, x, x, 5, x, x, 3, x, x],
+             [x, x, x, x, x, x, x, x, x],
+             [x, x, x, 2, x, 6, x, x, x],
+             [x, 7, x, 1, x, 3, 5, 4, x]]
+
+#Puzzle 10, but modified
+puzzle_11 = [[x, x, 1, x, x, x, 2, 7, x],
+             [x, 3, x, x, 2, x, x, 1, x],
+             [7, x, 9, 6, x, x, x, x, x],
+             [x, 4, 8, x, 9, x, 6, x, x],
+             [6, x, x, 8, 4, x, 9, x, x],
+             [x, x, x, 5, x, x, 3, x, x],
+             [3, x, x, x, x, x, 1, x, x],
+             [x, x, x, 2, x, 6, x, x, x],
+             [x, 7, x, 1, x, 3, 5, 4, x]]
+
 # puzzle_x = [[],
 #             [],
 #             [],
@@ -126,8 +148,18 @@ puzzle_9 = [[x, x, x, x, x, x, 3, 1, x],
 #             [x, x, x, x, x, x, x, x, x],
 #             [x, x, x, x, x, x, x, x, x]]
 
+# puzzle_xy = [[x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x],
+#              [x, x, x, x, x, x, x, x, x]]
+
 def solver_test():
-    puzzle = puzzle_6
+    puzzle = puzzle_10
     solver = sudoku_solver.SudokuSolver(puzzle)
     solver.solve()
 

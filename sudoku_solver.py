@@ -38,7 +38,7 @@ class SudokuSolver:
         
         self.strategies = list()
         self.strategies.append(twins_strategy.InTwins(self, [1, 2, 3, 4, 5, 6, 7, 8]))
-        if self.max_depth:
+        if self.max_depth > 0:
             strategy = hypothetical_strategy.HypoNumber(self, self.max_depth)
             self.strategies.append(strategy)
         
