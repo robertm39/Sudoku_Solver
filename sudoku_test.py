@@ -193,6 +193,32 @@ puzzle_14 = ['QS..W.G.O..PN..CE.L.K.R.M',
              'T.Y..S.CR...PNU.XA..FK.Q.',
              'XBK...JTIU.RQ.....DFLGH..']
 
+puzzle_15 = ['QS..W.G.O..PN..CE.L.K.R.M',
+             '.Y..J.F..H...U..MG.N.I.E.',
+             '.FH.T..WD.L..B..JS....VPX',
+             'MG.C.K.I..D.O.YT...A.N.U.',
+             'B.PE.Q...T..CWGV..F....JA',
+             'G.US.D.O..Q..AF.YL.C.RJ..',
+             'HI.NO..XG.PM..KR...V.T..B',
+             '..VJ..W.YN..UT..G.K..C.XS',
+             '.DR.A..E...J..L.N.M.OQ..K',
+             '..EX...L.P..B..H.F....AY.',
+             'P..B.A.SKG.FI..D.R.E.J..N',
+             '.C.O..T..F.W.K...X..R.GB.',
+             'LE.A..O.Q.Y.G.T.H.....X.I',
+             '.V.M.RE.BC...LX...PI.U.KO',
+             'W.N...XU..VBS.A..O.J...H.',
+             'S.Q.U.YG.IC.....K..D.E.O.',
+             'CT..IJ.PF..SK.NX.U.H..W..',
+             'R.M.L..N.V..Y.E.T...P...C',
+             '.HA.D.K..R..F.O..PIY.L..Q',
+             '..BK.X.Q.AW.R.V.O.J..F.DH',
+             '..WH.....OFI.D..V...M...T',
+             'N.....Q.L.H..MJ.B.S.E.DV.',
+             'J..LR.NH....E.B.UMG.XS.C.',
+             'T.Y..S.CR...P.U.XA..FK.Q.',
+             'XBK...JTIU.RQ.....D.LGH..']
+
 # puzzle_x = [[],
 #             [],
 #             [],
@@ -224,8 +250,8 @@ puzzle_14 = ['QS..W.G.O..PN..CE.L.K.R.M',
 #              [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzles.FIVE_SUDOKU
-    start = puzzle.get_start(puzzle_14)
+    puzzle = puzzles.HEXA_SUDOKU
+    start = puzzle.get_start(puzzle_12)
     solver = sudoku_solver.SudokuSolver(puzzle, start)
     solver.solve()
 

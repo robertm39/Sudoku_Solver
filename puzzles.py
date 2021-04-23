@@ -134,9 +134,13 @@ def get_rectangular_start(start_list, cell_values):
 def print_rectangular_board(board, width, height, square_size):
     num_squares_per_row = width // square_size
     
-    print('+' + '-' * (width + num_squares_per_row - 1) + '+')
+    # print('┌' + '─' * (width + num_squares_per_row - 1) + '┐')
+    print('┌', end='')
+    print(('─'*square_size + '┬')*(num_squares_per_row-1), end='')
+    print('─' *square_size + '┐')
+    
     for y in range(1, height+1):
-        print('|', end='')
+        print('│', end='')
         for x in range(1, width+1):
             cell = board[puzzle_utils.Coords(x, y)]
             value = cell.value
@@ -146,15 +150,22 @@ def print_rectangular_board(board, width, height, square_size):
                 print(value, end='')
             
             if x % square_size == 0 and x != width:
-                print('|', end='')
-        print('|')
-        
+                print('│', end='')
+        print('│')
+        #┌──┬──┐
+        #│  │  │
+        #├──┼──┤
+        #│  │  │
+        #└──┴──┘
         if y % square_size == 0 and y != height:
-            print('|', end='')
-            print(('-'*square_size + '+')*(num_squares_per_row-1), end='')
-            print('-' *square_size + '|')
+            print('├', end='')
+            print(('─'*square_size + '┼')*(num_squares_per_row-1), end='')
+            print('─' *square_size + '┤')
     
-    print('+' + '-' * (width + num_squares_per_row - 1) + '+')
+    # print('└' + '─' * (width + num_squares_per_row - 1) + '┘')
+    print('└', end='')
+    print(('─'*square_size + '┴')*(num_squares_per_row-1), end='')
+    print('─' *square_size + '┘')
 
 # print_normal_sudoku_board = lambda board: print_rectangular_board(board,
 #                                                                   NORMAL_SUDOKU_SIZE,
