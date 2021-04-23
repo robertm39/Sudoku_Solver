@@ -9,7 +9,7 @@ import puzzle_utils
 
 SUDOKU_VALUES = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-def get_sudoku_variant(square_size):
+def get_sudoku_variant(square_size, cell_values=None):
     layout = set()
     size = square_size ** 2
     
@@ -20,7 +20,10 @@ def get_sudoku_variant(square_size):
             layout.add(coords)
     
     #Initialize the values
-    cell_values = set(SUDOKU_VALUES[:size])
+    if cell_values is None:
+        cell_values = set(SUDOKU_VALUES[:size])
+    else:
+        cell_values = set(cell_values)
     
     #Initialize the groups
     groups = set()
@@ -182,3 +185,4 @@ def print_rectangular_board(board, width, height, square_size):
 #                                     print_normal_sudoku_board)
 NORMAL_SUDOKU = get_sudoku_variant(3)
 HEXA_SUDOKU = get_sudoku_variant(4)
+FIVE_SUDOKU = get_sudoku_variant(5, 'ABCDEFGHIJKLMNOPQRSTUVWXY')

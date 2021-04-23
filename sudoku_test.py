@@ -165,6 +165,34 @@ puzzle_13 = ['FA.C..9.5.02.8.6',
              '0C..17.F6.48..D.',
              '7.5..A..B.....C.']
 
+#25x25 Sudoku
+#http://sudoku4me.com/sudoku%2025x25.php
+puzzle_14 = ['QS..W.G.O..PN..CE.L.K.R.M',
+             '.YDVJ.FAXH...U..MG.NWI.E.',
+             '.FH.T..WD.L..B..JS....VPX',
+             'MG.C.KRI..D.O.YT...A.N.U.',
+             'BKPE.Q...T..CWGV..F....JA',
+             'GPUS.D.O..Q..AF.YL.C.RJ..',
+             'HI.NO..XG.PM..KR...VDT..B',
+             '..VJ..W.YN..UT..G.KBIC.XS',
+             '.DR.ACVE...JHGLWNIMPOQ..K',
+             '..EXQUML.P..BSRH.F....AY.',
+             'PUXB.A.SKG.FI.QD.R.E.J..N',
+             '.CSO..T..FMWDKPYQX..R.GB.',
+             'LE.AFVO.Q.Y.G.TNH.....X.I',
+             '.V.M.RE.BC...LX...PI.U.KO',
+             'W.N...XU..VBS.A..O.JTYLH.',
+             'S.QWU.YG.IC.....K..D.EBO.',
+             'CT..IJ.PF..SK.NX.U.H..W..',
+             'R.M.L..N.V..YHEQTBAGP...C',
+             '.HA.DEK..RJTF.O..PIY.LSNQ',
+             '..BK.XUQMAW.R.V.O.J..F.DH',
+             '..WH.....OFI.D..VEYLM...T',
+             'NOGICYQ.L.H..MJ.B.S.E.DV.',
+             'J..LR.NH....EOBKUMG.XS.C.',
+             'T.Y..S.CR...PNU.XA..FK.Q.',
+             'XBK...JTIU.RQ.....DFLGH..']
+
 # puzzle_x = [[],
 #             [],
 #             [],
@@ -196,8 +224,8 @@ puzzle_13 = ['FA.C..9.5.02.8.6',
 #              [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzles.HEXA_SUDOKU
-    start = puzzle.get_start(puzzle_12)
+    puzzle = puzzles.FIVE_SUDOKU
+    start = puzzle.get_start(puzzle_14)
     solver = sudoku_solver.SudokuSolver(puzzle, start)
     solver.solve()
 
