@@ -128,6 +128,43 @@ puzzle_11 = [[x, x, 1, x, x, x, 2, 7, x],
              [x, x, x, 2, x, 6, x, x, x],
              [x, 7, x, 1, x, 3, 5, 4, x]]
 
+#Expert level hexadoku
+#https://www.sudoku-puzzles-online.com/cgi-bin/hexadoku/print-1-grid-hexadoku.cgi
+puzzle_12 = ['B......3...8.F7.',
+             '.F..2.4..3.1....',
+             '6.84A1.7.......2',
+             '0......D.9E.8AC.',
+             '9......AEB0..2.4',
+             '.D.A...172...E0.',
+             '7...5...8.C..B..',
+             '.4...E.F5..3D.97',
+             '4.E7D..2.C3.....',
+             '.C.F.7..142..D..',
+             '....B39..D...0..',
+             '...B.F.4....7.39',
+             '.1C..........8D.',
+             '....7.69..D0..FB',
+             'E9........F....5',
+             '...2.0.8....3...']
+
+#Beginner level hexadoku
+puzzle_13 = ['FA.C..9.5.02.8.6',
+             '........14...5..',
+             '....A438..9....1',
+             'D.B.......7A....',
+             '..2...4....1.D.5',
+             '..4E.6D......F..',
+             '..3...12......4.',
+             '95.7EC..0...A...',
+             '...6B8..2..F039.',
+             '...5....CE.98172',
+             '.E..7.A..B......',
+             '3.............B.',
+             '4..B.5...7.3.0..',
+             'E6.9C..BA0..3.57',
+             '0C..17.F6.48..D.',
+             '7.5..A..B.....C.']
+
 # puzzle_x = [[],
 #             [],
 #             [],
@@ -159,8 +196,8 @@ puzzle_11 = [[x, x, 1, x, x, x, 2, 7, x],
 #              [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzles.NORMAL_SUDOKU
-    start = puzzle.get_start(puzzle_7)
+    puzzle = puzzles.HEXA_SUDOKU
+    start = puzzle.get_start(puzzle_12)
     solver = sudoku_solver.SudokuSolver(puzzle, start)
     solver.solve()
 
