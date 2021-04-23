@@ -5,7 +5,7 @@ Created on Thu Apr 22 16:30:16 2021
 @author: rober
 """
 
-import utils
+import puzzles
 
 import sudoku_solver
 
@@ -159,19 +159,10 @@ puzzle_11 = [[x, x, 1, x, x, x, 2, 7, x],
 #              [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzle_10
-    solver = sudoku_solver.SudokuSolver(puzzle)
+    puzzle = puzzles.NORMAL_SUDOKU
+    start = puzzles.get_normal_sudoku_start(puzzle_1)
+    solver = sudoku_solver.SudokuSolver(puzzle, start)
     solver.solve()
-
-def adj_test():
-    coords = (1, 1)
-    adj = utils.adjacent(coords)
-    for coords in adj:
-        print(coords)
-
-def groups_test():
-    for group in utils.GROUPS:
-        utils.print_group(group)
 
 def main():
     solver_test()

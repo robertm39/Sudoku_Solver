@@ -7,39 +7,12 @@ Created on Fri Apr 23 10:32:04 2021
 
 import sudoku_solver
 
-#There's no need for this
-#It'll always be clear at the start anyways
-
-# class TriedData:
-#     """
-#     Keeps track of which hypotheticals have been tried.
-#     """
-#     def __init__(self):
-#         self.tried = dict()
-    
-#     def set_tried(self, coords, num):
-#         if not coords in self.tried:
-#             self.tried[coords] = set()
-#         self.tried[coords].add(num)
-    
-#     def has_tried(self, coords, num):
-#         if not coords in self.tried:
-#             return False
-#         return num in self.tried[coords]
-    
-#     def clear(self):
-#         self.tried.clear()
-
 def copy_board(board_1, board_2):
     """
     Copy the data from board_1 onto board_2.
     """
     for coords, cell in board_1.items():
         other_cell = board_2[coords]
-        
-        # if cell.num is not None:
-        #     other_cell.set_value(cell.num)
-        #     continue
         
         to_remove = [n for n in other_cell.possible if not n in cell.possible]
         for num in to_remove:
