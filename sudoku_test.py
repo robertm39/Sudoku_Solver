@@ -86,6 +86,26 @@ puzzle_7 = [[x, x, x, x, 5, 4, x, 1, x],
             [7, x, x, 3, x, x, 2, 5, x],
             [x, 6, x, 7, 8, x, x, x, x]]
 
+puzzle_8 = [[x, x, x, 4, x, x, x, x, 9],
+            [x, 6, 4, x, x, 7, x, 2, 3],
+            [5, x, 7, x, x, x, x, x, x],
+            [x, x, x, 2, x, x, 6, x, x],
+            [x, x, 8, 1, x, 6, 3, x, x],
+            [x, x, 1, x, x, 4, x, x, x],
+            [x, x, x, x, x, x, 7, x, 5],
+            [2, 3, x, 7, x, x, 9, 1, x],
+            [4, x, x, x, x, 1, x, x, x]]
+
+puzzle_9 = [[x, x, x, x, x, x, 3, 1, x],
+            [x, x, x, 3, 2, x, x, x, 7],
+            [x, 9, x, 7, x, x, 8, x, 6],
+            [x, x, x, x, x, 4, 2, 5, x],
+            [x, x, x, x, 3, x, x, x, x],
+            [x, 6, 4, 8, x, x, x, x, x],
+            [7, x, 2, x, x, 3, x, 4, x],
+            [9, x, x, x, 1, 7, x, x, x],
+            [x, 8, 6, x, x, x, x, x, x]]
+
 # puzzle_x = [[],
 #             [],
 #             [],
@@ -107,7 +127,7 @@ puzzle_7 = [[x, x, x, x, 5, 4, x, 1, x],
 #             [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzle_7
+    puzzle = puzzle_9
     solver = sudoku_solver.SudokuSolver(puzzle)
     solver.solve()
 
