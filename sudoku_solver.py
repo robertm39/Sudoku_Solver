@@ -7,108 +7,50 @@ Created on Thu Apr 22 15:43:09 2021
 
 from queue import SimpleQueue
 
-SUDOKU_SIZE = 9
-SQUARE_SIZE = 3
+import utils
 
-VALS = set(range(1, SUDOKU_SIZE+1))
-
-#Data format: dict (int, int) -> Cell
-
-def adjacent(cell_coords):
-    """
-    Return a generator that generates all adjacent cells.
-    """
-    x, y = cell_coords
-    prev = set([cell_coords])
-    #Yield cells in the same row or column
-    for v in VALS:
-        coords = (v, y)
-        if not coords in prev:
-            prev.add(coords)
-            yield coords
-        
-        coords = (x, v)
-        if not coords in prev:
-            prev.add(coords)
-            yield coords
-    
-    #Yield cells in same square
-    ulx = ((x-1)//3) * 3 + 1
-    uly = ((y-1)//3) * 3 + 1
-    
-    for dx in range(0, 3):
-        for dy in range(0, 3):
-            cx = ulx + dx
-            cy = uly + dy
-            coords = (cx, cy)
-            if coords in prev:
-                continue
-            prev.add(coords)
-            yield coords
-
-class Cell:
-    def __init__(self, parent, coords, num=None):
-        self.parent = parent
-        self.coords = coords
-        self.num = num
-        
-        if self.num is None:
-            self.possible = VALS.copy()
-        else:
-            self.possible = set([self.num])
-    
-    def remove_possibility(self, num):
-        if not num in self.possible:
-            return
-        
-        self.possible.remove(num)
-        if len(self.possible) == 1:
-            self.num = list(self.possible)[0]
-            self.parent.alert_value(self)
-        elif len(self.possible) == 0:
-            self.num = None
-            self.parent.alert_contradiction(self)
+import twins_strategy
 
 class SudokuSolver:
     def __init__(self, data=None):
         self.board = dict()
         self.known_value_cells = SimpleQueue()
-        self.contradiction = False
-        
         for y, row in enumerate(data, start=1):
             for x, num in enumerate(row, start=1):
-                if not num in VALS:
+                if not num in utils.VALS:
                     num = None
                 
-                cell = Cell(self, (x, y), num)
+                cell = utils.Cell((x, y), num, self)
                 self.board[x, y] = cell
-                if num in VALS:
+                if num in utils.VALS:
                     self.known_value_cells.put(cell)
+        
+        self.contradiction = False
+        
+        self.strategies = list()
+        self.strategies.append(twins_strategy.InTwins(self, [1, 2, 3]))
+        
+        self.changed = False
     
     def print_state(self):
-        # print("⌜-----------⌝")
-        print("+-----------+")
-        for y in VALS:
-            print('|', end='')
-            for x in VALS:
-                num = self.board[x, y].num
-                if num is None:
-                    print(' ', end='')
-                else:
-                    print(num, end='')
-                if x in (3, 6):
-                    print('|', end='')
-            print('|')
-            if y in(3, 6):
-                print('|---+---+---|')
-        # print("⌞-----------⌟")
-        print("+-----------+")
+        utils.print_board(self.board)
     
     def alert_value(self, cell):
         self.known_value_cells.put(cell)
+        self.changed = True
+        
+        for strat in self.strategies:
+            strat.alert_value(cell)
+    
+    def alert_removal(self, cell, num):
+        self.changed = True
+        
+        for strat in self.strategies:
+            strat.alert_removal(cell, num)
     
     def alert_contradiction(self, cell):
         self.contradiction = True
+        print('Contradiction')
     
     def basic_elimination(self):
         """
@@ -119,7 +61,7 @@ class SudokuSolver:
             if cell.num is None:
                 continue
             num = cell.num
-            for coords in adjacent(cell.coords):
+            for coords in utils.get_adjacent(cell.coords):
                 self.board[coords].remove_possibility(num)
     
     def solve(self):
@@ -128,5 +70,22 @@ class SudokuSolver:
         """
         self.print_state()
         print('')
-        self.basic_elimination()
+        
+        self.changed = True
+        
+        while self.changed:
+            
+            self.basic_elimination()
+            
+            #We've done all the basic elimination we can
+            #If we can't do anything else, we're done
+            self.changed = False
+            for strat in self.strategies:
+                strat.do_eliminations()
+                
+                #If something changed, go back to basic elimination
+                if self.changed:
+                    continue
+                
+            
         self.print_state()

@@ -5,6 +5,8 @@ Created on Thu Apr 22 16:30:16 2021
 @author: rober
 """
 
+import utils
+
 import sudoku_solver
 
 x = object()
@@ -31,6 +33,47 @@ puzzle_2 = [[x, x, x, 7, 9, x, x, 5, 6],
             [1, x, 2, x, x, x, x, x, 5],
             [3, 9, x, x, 5, 4, x, x, x]]
 
+#for testing
+puzzle_3 = [[x, x, x, x, x, x, x, x, x],
+            [x, x, x, 1, x, x, x, x, x],
+            [x, x, x, x, x, x, 1, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, 1, x, x, x, x, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, 1, x, x, x, x, x, x, x]]
+
+puzzle_4 = [[x, x, x, x, x, x, x, x, x],
+            [x, x, x, 1, 2, x, x, x, x],
+            [x, x, x, x, x, x, 1, 2, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, x, x, x, x, x, x, x],
+            [x, x, 2, x, x, x, x, x, x],
+            [x, x, 1, x, x, x, x, x, x]]
+
+# puzzle_x = [[],
+#             [],
+#             [],
+#             [],
+#             [],
+#             [],
+#             [],
+#             [],
+#             []]
+
+# puzzle_x = [[x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x],
+#             [x, x, x, x, x, x, x, x, x]]
+
 def solver_test():
     puzzle = puzzle_2
     solver = sudoku_solver.SudokuSolver(puzzle)
@@ -38,13 +81,18 @@ def solver_test():
 
 def adj_test():
     coords = (1, 1)
-    adj = sudoku_solver.adjacent(coords)
+    adj = utils.adjacent(coords)
     for coords in adj:
         print(coords)
+
+def groups_test():
+    for group in utils.GROUPS:
+        utils.print_group(group)
 
 def main():
     solver_test()
     # adj_test()
+    # groups_test()
 
 if __name__ == '__main__':
     main()
