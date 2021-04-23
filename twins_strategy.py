@@ -38,25 +38,28 @@ class InTwins:
             self.orders = tuple(orders)
         
         self.parent = parent
+        self.puzzle = self.parent.puzzle
         self.data_from_groups = dict()
         
         self.initialize_data()
         
     def initialize_data(self):
-        for group in utils.GROUPS:
-            unsolved_numbers = set(utils.VALS)
-            for g_cell in group.cells:
-                cell = self.parent.board[g_cell.coords]
-                if cell.num is not None:
-                    unsolved_numbers.remove(cell.num)
+        # for group in utils.GROUPS:
+        for group in self.puzzle.groups:
+            # unsolved_numbers = set(utils.VALS)
+            unsolved_numbers = set(self.puzzle.cell_values)
+            for coords in group:
+                cell = self.parent.board[coords]
+                if cell.value is not None:
+                    unsolved_numbers.remove(cell.value)
             
             coords_from_number = {num:set() for num in unsolved_numbers}
-            for g_cell in group.cells:
-                cell = self.parent.board[g_cell.coords]
+            for coords in group:
+                cell = self.parent.board[coords]
                 for num in cell.possible:
                     if not num in coords_from_number:
                         continue
-                    coords_from_number[num].add(cell.coords)
+                    coords_from_number[num].add(coords)
                     
             data = OneGroupInTwinsData(group)
             data.coords_from_number = coords_from_number
@@ -64,7 +67,7 @@ class InTwins:
             
             self.data_from_groups[group] = data
             
-    def alert_value(self, cell):
+    def notify_value(self, coords):
         """
         Eliminate this value from the unsolved values for all cells
         in the same group as this cell.
@@ -72,17 +75,19 @@ class InTwins:
         Parameters:
             cell: The cell whose value was determined.
         """
-        for group in utils.GROUPS_FROM_COORDS[cell.coords]:
+        # for group in utils.GROUPS_FROM_COORDS[cell.coords]:
+        for group in self.puzzle.groups_from_coord[coords]:
             if not group in self.data_from_groups:
                 print('FAILED TO FIND GROUP')
                 raise AssertionError
                 continue
             data = self.data_from_groups[group]
-            # data.unsolved_numbers.remove(cell.num)
-            data.unsolved_numbers.discard(cell.num)
-            # del data.coords_from_number[cell.num]
+            
+            cell = self.parent.board[coords]
+            
+            data.unsolved_numbers.discard(cell.value)
     
-    def alert_removal(self, cell, num):
+    def notify_removal(self, coords, num):
         """
         Remove the given cell from the appropriate sets.
         
@@ -90,7 +95,8 @@ class InTwins:
             cell: The cell that had a possibility eliminated.
             num: The possibility that was eliminated.
         """
-        for group in utils.GROUPS_FROM_COORDS[cell.coords]:
+        # for group in utils.GROUPS_FROM_COORDS[cell.coords]:
+        for group in self.puzzle.groups_from_coord[coords]:
             if not group in self.data_from_groups:
                 print('FAILED TO FIND GROUP')
                 raise AssertionError
@@ -102,7 +108,7 @@ class InTwins:
                 continue
             
             coords_from_number = data.coords_from_number[num]
-            coords_from_number.discard(cell.coords)
+            coords_from_number.discard(coords)
     
     def do_removals(self):
         for group, data in self.data_from_groups.items():
@@ -138,7 +144,8 @@ class InTwins:
                     #If the number of cells equals the order,
                     #then we can get rid of all other possibilities
                     #from these cells
-                    for num in utils.VALS:
+                    # for num in utils.VALS:
+                    for num in self.puzzle.cell_values:
                         if num in comb:
                             continue
                         for coords in coords_with_nums:

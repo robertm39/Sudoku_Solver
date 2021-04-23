@@ -11,7 +11,7 @@ Created on Thu Apr 22 15:43:09 2021
 import puzzle_utils
 
 from basic_elimination_strategy import BasicElimination
-# from twins_strategy import InTwins
+from twins_strategy import InTwins
 # from hypothetical_strategy import HypoNumber
 
 class SudokuSolver:
@@ -33,7 +33,7 @@ class SudokuSolver:
         self.strategies = list()
         self.strategies.append(BasicElimination(self))
         
-        # self.strategies.append(InTwins(self, [1, 2, 3, 4, 5, 6, 7, 8]))
+        self.strategies.append(InTwins(self, [1, 2, 3, 4, 5, 6, 7, 8]))
         # if self.max_depth > 0:
         #     self.strategies.append(HypoNumber(self, self.max_depth))
         
