@@ -53,35 +53,66 @@ for uly in range(1, NORMAL_SUDOKU_SIZE+1, NORMAL_SUDOKU_SQUARE_SIZE):
         square_group = puzzle_utils.Group(square)
         NORMAL_SUDOKU_GROUPS.add(square_group)
 
-def get_normal_sudoku_start(start_list):
-    # print('Getting start')
+def get_rectangular_start(start_list, cell_values):
     start = dict()
     for y, row in enumerate(start_list, 1):
         for x, val in enumerate(row, 1):
-            if not val in range(1, NORMAL_SUDOKU_SIZE+1):
+            val = str(val)
+            if not val in cell_values:
                 continue
-            # print('{}: {}'.format(coords, val))
             coords = puzzle_utils.Coords(x, y)
             start[coords] = str(val)
     return start
 
-def print_normal_sudoku_board(board):
-    print('+-----------+')
-    for y in range(1, NORMAL_SUDOKU_SIZE+1):
+get_normal_sudoku_start = lambda s: get_rectangular_start(s,
+                                                          NORMAL_SUDOKU_VALUES)
+
+def print_rectangular_board(board, width, height, square_size):
+    num_squares_per_row = width // square_size
+    
+    print('+' + '-' * (width + num_squares_per_row - 1) + '+')
+    for y in range(1, height+1):
         print('|', end='')
-        for x in range(1, NORMAL_SUDOKU_SIZE+1):
+        for x in range(1, width+1):
             cell = board[puzzle_utils.Coords(x, y)]
             value = cell.value
             if value is None:
                 print(' ', end='')
             else:
                 print(value, end='')
-            if x in (3, 6):
+            
+            if x % square_size == 0 and x != width:
                 print('|', end='')
         print('|')
-        if y in(3, 6):
-            print('|---+---+---|')
-    print('+-----------+')
+        
+        if y % square_size == 0 and y != height:
+            print('|', end='')
+            print(('-'*square_size + '+')*(num_squares_per_row-1), end='')
+            print('-' *square_size + '|')
+    
+    print('+' + '-' * (width + num_squares_per_row - 1) + '+')
+
+print_normal_sudoku_board = lambda board: print_rectangular_board(board,
+                                                                  NORMAL_SUDOKU_SIZE,
+                                                                  NORMAL_SUDOKU_SIZE,
+                                                                  NORMAL_SUDOKU_SQUARE_SIZE)
+# def print_normal_sudoku_board(board):
+#     print('+-----------+')
+#     for y in range(1, NORMAL_SUDOKU_SIZE+1):
+#         print('|', end='')
+#         for x in range(1, NORMAL_SUDOKU_SIZE+1):
+#             cell = board[puzzle_utils.Coords(x, y)]
+#             value = cell.value
+#             if value is None:
+#                 print(' ', end='')
+#             else:
+#                 print(value, end='')
+#             if x in (3, 6):
+#                 print('|', end='')
+#         print('|')
+#         if y in(3, 6):
+#             print('|---+---+---|')
+#     print('+-----------+')
 
 NORMAL_SUDOKU = puzzle_utils.Puzzle(NORMAL_SUDOKU_LAYOUT,
                                     NORMAL_SUDOKU_VALUES,

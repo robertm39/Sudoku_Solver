@@ -45,9 +45,8 @@ class SudokuSolver:
     def initialize(self, start):
         if start is None:
             return
-        print('initializing')
+        
         for coords, val in start.items():
-            print(coords, val)
             other_vals = set(self.puzzle.cell_values)
             other_vals.discard(val)
             for o_val in other_vals:
