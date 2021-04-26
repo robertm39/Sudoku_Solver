@@ -129,6 +129,11 @@ class Cell:
     
     def has_contradiction(self):
         return len(self.possible) == 0
+    
+    def __str__(self):
+        return '{} w\\ {}'.format(self.coords, self.value)
+    
+    __repr__ = __str__
 
 class Board:
     """

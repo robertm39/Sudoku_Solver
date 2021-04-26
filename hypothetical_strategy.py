@@ -44,7 +44,7 @@ class HypoNumber:
             self.unsolved_cells.add(cell)
     
     def notify_value(self, coords):
-        self.unsolved_cells.remove(self.parent.board[coords])
+        self.unsolved_cells.discard(self.parent.board[coords])
     
     def notify_removal(self, coords, num):
         pass

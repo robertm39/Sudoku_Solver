@@ -128,6 +128,57 @@ puzzle_11 = [[x, x, 1, x, x, x, 2, 7, x],
              [x, x, x, 2, x, 6, x, x, x],
              [x, 7, x, 1, x, 3, 5, 4, x]]
 
+#A 17-clue one
+very_hard = ['....4....',
+             '12.....73',
+             '.3...8...',
+             '..4...6..',
+             '...2.3...',
+             '..5......',
+             '..6.9.5..',
+             '.7.....2.',
+             '.........']
+
+very_hard_2 = ['.........',
+               '.....1..2',
+               '.34....5.',
+               '........6',
+               '..734....',
+               '28......1',
+               '....5..4.',
+               '1........',
+               '6....2...']
+
+very_hard_3 = ['........1',
+               '.......23',
+               '..4..5...',
+               '...1.....',
+               '....3.6..',
+               '..7...58.',
+               '....67...',
+               '.1...4...',
+               '52.......']
+
+very_hard_4 = ['...21....',
+               '..73.....',
+               '.58......',
+               '43.......',
+               '2.......8',
+               '.......76',
+               '......25.',
+               '.....73..',
+               '....98...']
+
+very_hard_x = ['.........',
+               '.........',
+               '.........',
+               '.........',
+               '.........',
+               '.........',
+               '.........',
+               '.........',
+               '.........']
+
 #Expert level hexadoku
 #https://www.sudoku-puzzles-online.com/cgi-bin/hexadoku/print-1-grid-hexadoku.cgi
 puzzle_12 = ['B......3...8.F7.',
@@ -250,8 +301,8 @@ puzzle_15 = ['QS..W.G.O..PN..CE.L.K.R.M',
 #              [x, x, x, x, x, x, x, x, x]]
 
 def solver_test():
-    puzzle = puzzles.HEXA_SUDOKU
-    start = puzzle.get_start(puzzle_12)
+    puzzle = puzzles.NORMAL_SUDOKU
+    start = puzzle.get_start(very_hard_4)
     solver = sudoku_solver.SudokuSolver(puzzle, start)
     solver.solve()
 

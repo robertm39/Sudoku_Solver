@@ -18,7 +18,7 @@ class SudokuSolver:
     def __init__(self,
                  puzzle,
                  start=None,
-                 max_depth=1,
+                 max_depth=2,
                  quiet=False):
         
         self.puzzle = puzzle
