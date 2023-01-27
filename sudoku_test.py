@@ -5,7 +5,10 @@ Created on Thu Apr 22 16:30:16 2021
 @author: rober
 """
 
+import random
+
 import puzzles
+import puzzle_utils
 
 import sudoku_solver
 
@@ -179,6 +182,16 @@ very_hard_x = ['.........',
                '.........',
                '.........']
 
+special = ['...1.2...',
+           '.6.....7.',
+           '..8...9..',
+           '4.......3',
+           '.5...7...',
+           '2...8...1',
+           '..9...8.5',
+           '.7.....6.',
+           '...3.4...']
+
 #Expert level hexadoku
 #https://www.sudoku-puzzles-online.com/cgi-bin/hexadoku/print-1-grid-hexadoku.cgi
 puzzle_12 = ['B......3...8.F7.',
@@ -300,16 +313,102 @@ puzzle_15 = ['QS..W.G.O..PN..CE.L.K.R.M',
 #              [x, x, x, x, x, x, x, x, x],
 #              [x, x, x, x, x, x, x, x, x]]
 
+def get_sudoku():
+    puzzle = puzzles.NORMAL_SUDOKU
+    start = puzzle.get_start(very_hard_x)
+    
+    while True:
+        solver = sudoku_solver.SudokuSolver(puzzle,
+                                            start,
+                                            hasty_hypothetical=True,
+                                            weak_hypothetical=False,
+                                            quiet=True)
+        # print('*'*40)
+        # print('')
+        solver.solve()
+        
+        if not solver.contradiction:
+            break
+    
+    print('Solution:')
+    solver.print_state()
+    
+    # See how many values we need to be able to solve it
+    all_coords = list(puzzle.layout)
+    random.shuffle(all_coords)
+    
+    # Use a binary search to find the minimum
+    lower_bound = 0
+    upper_bound = len(all_coords) - 1
+    
+    # Start in the middle
+    
+    while lower_bound < upper_bound:
+        
+        # Initialize the board
+        sub_start = puzzle.get_start(very_hard_x)
+        
+        index = (lower_bound + upper_bound) // 2
+    
+        for i in range(index+1):
+            c = all_coords[i]
+            
+            coords = puzzle_utils.Coords(c.x, c.y)
+            val = solver.board[coords].value
+            # print('{}: {}'.format(coords, val))
+            sub_start[coords] = val
+        
+        sub_solver = sudoku_solver.SudokuSolver(puzzle,
+                                                sub_start,
+                                                max_depth=2,
+                                                weak_hypothetical=True,
+                                                quiet=True)
+        
+        # print('')
+        # sub_solver.print_state()
+        
+        sub_solver.solve(time_limit=5.0)
+        # sub_solver.timed_solve(time_limit=10.0)
+        # sub_solver.print_state()
+        if sub_solver.is_finished():
+            # print('{} works'.format(index))
+            upper_bound = index
+        else:
+            # print('{} doesn\'t work'.format(index))
+            lower_bound = index + 1
+    
+    # Print out the state
+    # this is sorta ugly
+    index = (lower_bound + upper_bound) // 2
+    
+    for i in range(index+1):
+        c = all_coords[i]
+        coords = puzzle_utils.Coords(c.x, c.y)
+        val = solver.board[coords].value
+        start[coords] = val
+    
+    sub_solver = sudoku_solver.SudokuSolver(puzzle,
+                                            start,
+                                            max_depth=1,
+                                            weak_hypothetical=True,
+                                            quiet=True)
+    
+    print('')
+    print('{} cells filled in.'.format(index + 1))
+    print('Start:')
+    sub_solver.print_state()
+
 def solver_test():
     puzzle = puzzles.NORMAL_SUDOKU
-    start = puzzle.get_start(very_hard_4)
-    solver = sudoku_solver.SudokuSolver(puzzle, start)
+    start = puzzle.get_start(very_hard_x)
+    solver = sudoku_solver.SudokuSolver(puzzle, start, hasty_hypothetical=True)
     solver.solve()
 
 def main():
-    solver_test()
+    # solver_test()
     # adj_test()
     # groups_test()
+    get_sudoku()
 
 if __name__ == '__main__':
     main()

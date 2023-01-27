@@ -5,6 +5,8 @@ Created on Thu Apr 22 18:11:55 2021
 @author: rober
 """
 
+import time
+
 import itertools
 
 # import utils
@@ -110,7 +112,7 @@ class InTwins:
             coords_from_number = data.coords_from_number[num]
             coords_from_number.discard(coords)
     
-    def do_removals(self):
+    def do_removals(self, end_time=None):
         for group, data in self.data_from_groups.items():
             for order in self.orders:
                 nums_to_consider = set()
@@ -146,6 +148,11 @@ class InTwins:
                     #from these cells
                     # for num in utils.VALS:
                     for num in self.puzzle.cell_values:
+                        # We've timed out
+                        if end_time is not None:
+                            if time.time() > end_time:
+                                return
+                        
                         if num in comb:
                             continue
                         for coords in coords_with_nums:

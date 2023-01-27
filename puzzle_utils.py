@@ -17,6 +17,9 @@ class Coords:
     def __str__(self):
         return '({}, {})'.format(self.x, self.y)
     
+    def __rep__(self):
+        return 'Coords({}, {})'.format(self.x, self.y)
+    
     def __eq__(self, other):
         if not type(other) is Coords:
             return False

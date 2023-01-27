@@ -20,7 +20,8 @@ class BasicElimination:
     def notify_removal(self, coords, num):
         pass
     
-    def do_removals(self):
+    # Don't worry about the end time, because this is fast
+    def do_removals(self, end_time=None):
         removals = list()
         while not self.known_value_coords.empty():
             coords = self.known_value_coords.get_nowait()
