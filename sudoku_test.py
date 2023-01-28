@@ -417,7 +417,7 @@ def get_sudoku():
 
 TIME_LIMIT = 2.0
 
-def better_get_sudoku(folder=FOLDER_NAME, hypo=True):
+def better_get_sudoku(folder=FOLDER_NAME, hypo=True, twins=True):
     puzzle = puzzles.NORMAL_SUDOKU
     start = puzzle.get_start(very_hard_x)
     
@@ -466,6 +466,7 @@ def better_get_sudoku(folder=FOLDER_NAME, hypo=True):
         sub_solver = sudoku_solver.SudokuSolver(puzzle,
                                                 sub_start,
                                                 max_depth=2,
+                                                twins=twins,
                                                 weak_hypothetical=hypo,
                                                 quiet=True)
         
@@ -489,6 +490,7 @@ def better_get_sudoku(folder=FOLDER_NAME, hypo=True):
     sub_solver = sudoku_solver.SudokuSolver(puzzle,
                                             start,
                                             max_depth=1,
+                                            twins=twins,
                                             weak_hypothetical=hypo,
                                             quiet=True)
     
@@ -499,7 +501,7 @@ def better_get_sudoku(folder=FOLDER_NAME, hypo=True):
     end_str = sub_solver.get_state_str()
     print(end_str)
     
-    filename = str(num_filled_in) + '-' + str(int(time.time())) + '.txt'
+    filename = str(num_filled_in) + '-' + str(time.time()).replace('.', '-') + '.txt'
     filepath = os.path.join(DIR, folder, filename)
     with open(filepath, 'w', encoding='utf-8') as file:
         file.write(str(num_filled_in) + '\n')
@@ -517,9 +519,16 @@ def make_sudokus():
     while True:
         get_sudoku()
 
-def better_make_sudokus(folder=None, hypo=True):
+def better_make_sudokus(folder=None, hypo=True, twins=8):
     while True:
-        better_get_sudoku(folder=folder, hypo=hypo)
+        better_get_sudoku(folder=folder, hypo=hypo, twins=twins)
+
+def variety_make_sudokus():
+    while True:
+        better_get_sudoku(folder='0_very-easy-sudokus', hypo=False, twins=0)
+        better_get_sudoku(folder='1_easy-sudokus', hypo=False, twins=2)
+        better_get_sudoku(folder='2_medium-sudokus', hypo=False, twins=8)
+        better_get_sudoku(folder='3_hard-sudokus', hypo=True, twins=8)
 
 def main():
     # solver_test()
@@ -528,7 +537,13 @@ def main():
     # get_sudoku()
     # make_sudokus()
     # better_get_sudoku()
-    better_make_sudokus(folder='easy-sudokus', hypo=False)
+    
+    # better_make_sudokus(folder='very-easy-sudokus', hypo=False, twins=0)
+    # better_make_sudokus(folder='easy-sudokus', hypo=False, twins=2)
+    # better_make_sudokus(folder='medium-sudokus', hypo=False, twins=8)
+    # better_make_sudokus(folder='hard-sudokus', hypo=True, twins=8)
+    
+    variety_make_sudokus()
 
 if __name__ == '__main__':
     main()

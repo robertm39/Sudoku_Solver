@@ -25,6 +25,7 @@ class SudokuSolver:
                  puzzle,
                  start=None,
                  max_depth=2,
+                 twins=8,
                  strong_hypothetical=False,
                  hasty_hypothetical=False,
                  weak_hypothetical=True,
@@ -45,7 +46,9 @@ class SudokuSolver:
         self.strategies = list()
         self.strategies.append(BasicElimination(self))
         
-        self.strategies.append(InTwins(self, [1, 2, 3, 4, 5, 6, 7, 8]))
+        twins_list = list(range(twins+1))
+        self.strategies.append(InTwins(self, twins_list))
+        # self.strategies.append(InTwins(self, [1, 2, 3, 4, 5, 6, 7, 8]))
         
         if self.max_depth > 0:
             if strong_hypothetical:
