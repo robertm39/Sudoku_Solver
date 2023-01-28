@@ -76,12 +76,19 @@ class Puzzle:
     """
     A definition of a generalized sudoku puzzle.
     """
-    def __init__(self, layout, cell_values, groups, get_start, print_board):
+    def __init__(self,
+                 layout,
+                 cell_values,
+                 groups,
+                 get_start,
+                 print_board,
+                 get_board_str = lambda : ''):
         self.layout = set(layout)
         self.cell_values = set(cell_values)
         self.groups = set(groups)
         self.get_start = get_start
         self.print_board = print_board
+        self.get_state_str = get_board_str
         
         self.groups_from_coord = dict()
         

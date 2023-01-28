@@ -75,6 +75,9 @@ class SudokuSolver:
         # puzzle_utils.print_board(self.board)
         self.puzzle.print_board(self.board)
     
+    def get_state_str(self):
+        return self.puzzle.get_state_str(self.board)
+    
     def remove_possibility(self, coords, num):
         cell = self.board[coords]
         

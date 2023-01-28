@@ -5,6 +5,8 @@ Created on Thu Apr 22 16:30:16 2021
 @author: rober
 """
 
+import os
+import time
 import random
 
 import puzzles
@@ -313,6 +315,10 @@ puzzle_15 = ['QS..W.G.O..PN..CE.L.K.R.M',
 #              [x, x, x, x, x, x, x, x, x],
 #              [x, x, x, x, x, x, x, x, x]]
 
+DIR = os.path.dirname(__file__)
+FOLDER_NAME = 'sudokus'
+PATH = os.path.join(DIR, FOLDER_NAME)
+
 def get_sudoku():
     puzzle = puzzles.NORMAL_SUDOKU
     start = puzzle.get_start(very_hard_x)
@@ -330,8 +336,9 @@ def get_sudoku():
         if not solver.contradiction:
             break
     
-    print('Solution:')
-    solver.print_state()
+    # print('Solution:')
+    # solver.print_state()
+    start_str = solver.get_state_str()
     
     # See how many values we need to be able to solve it
     all_coords = list(puzzle.layout)
@@ -367,7 +374,7 @@ def get_sudoku():
         # print('')
         # sub_solver.print_state()
         
-        sub_solver.solve(time_limit=5.0)
+        sub_solver.solve(time_limit=3.0)
         # sub_solver.timed_solve(time_limit=10.0)
         # sub_solver.print_state()
         if sub_solver.is_finished():
@@ -395,8 +402,149 @@ def get_sudoku():
     
     print('')
     print('{} cells filled in.'.format(index + 1))
-    print('Start:')
-    sub_solver.print_state()
+    # print('Start:')
+    
+    end_str = sub_solver.get_state_str()
+    print(end_str)
+    
+    filename = str(index+1) + '-' + str(int(time.time())) + '.txt'
+    filepath = os.path.join(PATH, filename)
+    with open(filepath, 'w', encoding='utf-8') as file:
+        file.write(str(index+1) + '\n')
+        file.write(end_str)
+        file.write('\n'*5)
+        file.write(start_str)
+
+TIME_LIMIT = 2.0
+
+def better_get_sudoku():
+    puzzle = puzzles.NORMAL_SUDOKU
+    start = puzzle.get_start(very_hard_x)
+    
+    # Generate the solved board
+    while True:
+        solver = sudoku_solver.SudokuSolver(puzzle,
+                                            start,
+                                            hasty_hypothetical=True,
+                                            weak_hypothetical=False,
+                                            quiet=True)
+        
+        solver.solve()
+        
+        if not solver.contradiction:
+            break
+    
+    start_str = solver.get_state_str()
+    print(start_str)
+    
+    # See how many values we need to be able to solve it
+    all_coords = list(puzzle.layout)
+    random.shuffle(all_coords)
+    
+    # # Use a binary search to find the minimum
+    # lower_bound = 0
+    # upper_bound = len(all_coords) - 1
+    
+    # Start in the middle
+    
+    # while lower_bound < upper_bound:
+    dropped_indices = set()
+    
+    for i in range(len(all_coords)):
+        print(i)
+        
+        # Initialize the board
+        sub_start = puzzle.get_start(very_hard_x)
+        
+        # index = (lower_bound + upper_bound) // 2
+    
+        # for i in range(index+1):
+        #     c = all_coords[i]
+            
+        #     coords = puzzle_utils.Coords(c.x, c.y)
+        #     val = solver.board[coords].value
+        #     # print('{}: {}'.format(coords, val))
+        #     sub_start[coords] = val
+        
+        # Initialize a board without the dropped coords
+        # or the current coords.
+        for j in range(len(all_coords)):
+            if j in dropped_indices:
+                continue
+            
+            if j == i:
+                continue
+            
+            c = all_coords[j]
+            
+            coords = puzzle_utils.Coords(c.x, c.y)
+            val = solver.board[coords].value
+            
+            sub_start[coords] = val
+        
+        sub_solver = sudoku_solver.SudokuSolver(puzzle,
+                                                sub_start,
+                                                max_depth=2,
+                                                weak_hypothetical=True,
+                                                quiet=True)
+        
+        # print('')
+        # sub_solver.print_state()
+        
+        sub_solver.solve(time_limit=3.0)
+        # sub_solver.timed_solve(time_limit=10.0)
+        # sub_solver.print_state()
+        
+        # If the sudoku is still solveable, leave this square empty
+        if sub_solver.is_finished():
+            dropped_indices.add(i)
+        
+        # else:
+        #     # print('{} doesn\'t work'.format(index))
+        #     lower_bound = index + 1
+    
+    # Print out the state
+    # this is sorta ugly
+    # index = (lower_bound + upper_bound) // 2
+    
+    # for i in range(index+1):
+    #     c = all_coords[i]
+    #     coords = puzzle_utils.Coords(c.x, c.y)
+    #     val = solver.board[coords].value
+    #     start[coords] = val
+    
+    for j in range(len(all_coords)):
+        if j in dropped_indices:
+            continue
+        
+        c = all_coords[j]
+        
+        coords = puzzle_utils.Coords(c.x, c.y)
+        val = solver.board[coords].value
+        
+        start[coords] = val
+    
+    sub_solver = sudoku_solver.SudokuSolver(puzzle,
+                                            start,
+                                            max_depth=1,
+                                            weak_hypothetical=True,
+                                            quiet=True)
+    
+    print('')
+    num_filled_in = len(all_coords) - len(dropped_indices)
+    print('{} cells filled in.'.format(num_filled_in))
+    # print('Start:')
+    
+    end_str = sub_solver.get_state_str()
+    print(end_str)
+    
+    filename = str(num_filled_in) + '-' + str(int(time.time())) + '.txt'
+    filepath = os.path.join(PATH, filename)
+    with open(filepath, 'w', encoding='utf-8') as file:
+        file.write(str(num_filled_in) + '\n')
+        file.write(end_str)
+        file.write('\n'*5)
+        file.write(start_str)
 
 def solver_test():
     puzzle = puzzles.NORMAL_SUDOKU
@@ -404,11 +552,17 @@ def solver_test():
     solver = sudoku_solver.SudokuSolver(puzzle, start, hasty_hypothetical=True)
     solver.solve()
 
+def make_sudokus():
+    while True:
+        get_sudoku()
+
 def main():
     # solver_test()
     # adj_test()
     # groups_test()
-    get_sudoku()
+    # get_sudoku()
+    # make_sudokus()
+    better_get_sudoku()
 
 if __name__ == '__main__':
     main()

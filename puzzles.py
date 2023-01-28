@@ -62,12 +62,17 @@ def get_sudoku_variant(square_size, cell_values=None):
                                                         size,
                                                         size,
                                                         square_size)
+    get_board_str = lambda board: get_rectangular_board_state_str(board,
+                                                                  size,
+                                                                  size,
+                                                                  square_size)
     
     sudoku = puzzle_utils.Puzzle(layout,
                                  cell_values,
                                  groups,
                                  get_start,
-                                 print_board)
+                                 print_board,
+                                 get_board_str)
     
     return sudoku
 
@@ -81,6 +86,67 @@ def get_rectangular_start(start_list, cell_values):
             coords = puzzle_utils.Coords(x, y)
             start[coords] = str(val)
     return start
+
+def get_rectangular_board_state_str(board, width, height, square_size):
+    result = ''
+    
+    num_squares_per_row = width // square_size
+    
+    result += '┌'
+    # print('┌', end='')
+    
+    result += ('─'*square_size + '┬')*(num_squares_per_row-1)
+    # print(('─'*square_size + '┬')*(num_squares_per_row-1), end='')
+    
+    result += '─' *square_size + '┐\n'
+    # print('─' *square_size + '┐')
+    
+    for y in range(1, height+1):
+        result += '│'
+        # print('│', end='')
+        
+        for x in range(1, width+1):
+            cell = board[puzzle_utils.Coords(x, y)]
+            value = cell.value
+            if value is None:
+                result += ' '
+                # print(' ', end='')
+            else:
+                result += str(value)
+                # print(value, end='')
+            
+            if x % square_size == 0 and x != width:
+                result += '│'
+                # print('│', end='')
+        
+        result += '│\n'
+        # print('│')
+        
+        #┌───┬───┐
+        #│   │   │
+        #├───┼───┤
+        #│   │   │
+        #└───┴───┘
+        if y % square_size == 0 and y != height:
+            result += '├'
+            # print('├', end='')
+            
+            result += ('─'*square_size + '┼')*(num_squares_per_row-1)
+            # print(('─'*square_size + '┼')*(num_squares_per_row-1), end='')
+            
+            result += '─' *square_size + '┤\n'
+            # print('─' *square_size + '┤')
+    
+    result += '└'
+    # print('└', end='')
+    
+    result += ('─'*square_size + '┴')*(num_squares_per_row-1)
+    # print(('─'*square_size + '┴')*(num_squares_per_row-1), end='')
+    
+    result += '─' *square_size + '┘\n'
+    # print('─' *square_size + '┘')
+    
+    return result
 
 def print_rectangular_board(board, width, height, square_size):
     num_squares_per_row = width // square_size
